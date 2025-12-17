@@ -19,6 +19,7 @@ class Transaksi extends Model
         'tanggal_transaksi',
     ];
 
+    // Relasi ke kasir (user)
     public function kasir()
     {
         return $this->belongsTo(User::class, 'id_kasir');
@@ -29,5 +30,4 @@ class Transaksi extends Model
     {
         return $this->hasMany(DetailTransaksi::class, 'id_transaksi');
     }
-
 }

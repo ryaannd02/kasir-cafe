@@ -45,14 +45,27 @@ Route::middleware(['auth.manajer'])->group(function () {
     Route::get('/manajer/laporan', [ManajerController::class, 'laporan'])->name('manajer.laporan');
 
     // Log Aktivitas
+
     Route::get('/manajer/log', [ManajerController::class, 'log'])->name('manajer.log');
 });
 
 // -------------------- KASIR --------------------
 Route::middleware(['auth.kasir'])->group(function () {
+    // Dashboard utama kasir
     Route::get('/kasir/dashboard', [KasirController::class, 'index'])->name('kasir.dashboard');
 
-    // Transaksi
-    Route::get('/kasir/transaksi/create', [TransaksiController::class, 'create'])->name('transaksi.create');
-    Route::post('/kasir/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
+    // Keranjang
+    Route::post('/kasir/cart/add/{menu}', [KasirController::class, 'addToCart'])->name('kasir.cart.add');
+    Route::post('/kasir/cart/increase/{menu}', [KasirController::class, 'increaseCart'])->name('kasir.cart.increase');
+    Route::post('/kasir/cart/decrease/{menu}', [KasirController::class, 'decreaseCart'])->name('kasir.cart.decrease');
+    Route::post('/kasir/cart/remove/{menu}', [KasirController::class, 'removeFromCart'])->name('kasir.cart.remove');
+    Route::post('/kasir/cart/clear', [KasirController::class, 'clearCart'])->name('kasir.cart.clear');
+
+    // Checkout transaksi
+    Route::post('/kasir/transaksi/checkout', [KasirController::class, 'checkout'])->name('kasir.checkout');
+    Route::get('/kasir/transaksi/{kode}/struk', [TransaksiController::class, 'struk'])->name('kasir.transaksi.struk');
+
+    // Riwayat pesanan & detail transaksi (pakai kode_transaksi)
+    Route::get('/kasir/transaksi', [TransaksiController::class, 'index'])->name('kasir.transaksi.index');
+    Route::get('/kasir/transaksi/{kode}', [TransaksiController::class, 'show'])->name('kasir.transaksi.show');
 });

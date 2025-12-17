@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-gray-900 text-white px-6 py-4 shadow-lg">
+    <nav class="bg-white text-gray-900 px-6 py-4 shadow-lg">
         <div class="flex justify-between items-center">
             <!-- Branding -->
             <span class="text-xl font-bold tracking-wide">Cafe Gen-Z</span>

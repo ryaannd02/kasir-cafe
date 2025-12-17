@@ -2,7 +2,15 @@
 
 @section('content')
 <div class="p-8 bg-gray-50 min-h-screen">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Log Aktivitas Pegawai</h1>
+    {{-- Header judul + tombol kembali --}}
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Log Aktivitas Pegawai</h1>
+<a href="{{ route('admin.dashboard') }}"
+   class="inline-flex items-center bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-500 transition">
+   Kembali
+</a>
+
+    </div>
 
     {{-- Pesan sukses --}}
     @if(session('success'))
@@ -21,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($logs as $log)
+                @forelse($logs as $log)
                 <tr class="hover:bg-gray-50 transition">
                     <td class="border px-4 py-2 font-semibold text-gray-800">
                         {{ $log->user->name ?? 'Unknown' }}
@@ -33,7 +41,13 @@
                         {{ $log->created_at->format('d M Y H:i') }}
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="3" class="text-center text-gray-500 py-6">
+                        Belum ada log aktivitas.
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

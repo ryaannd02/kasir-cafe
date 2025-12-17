@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 
 class ManajerController extends Controller
 {
+    // Dashboard manajer: daftar transaksi + filter
     public function index(Request $request)
     {
         $menus = Menu::all();
@@ -25,12 +26,14 @@ class ManajerController extends Controller
             $query->whereDate('tanggal_transaksi', $request->tanggal);
         }
 
-        $transaksis = $query->get();
+        // gunakan paginate agar bisa dipaginasi di view
+        $transaksis = $query->paginate(10);
         $kasirs = User::where('role', 'kasir')->get();
 
         return view('manajer.dashboard', compact('menus', 'transaksis', 'kasirs'));
     }
 
+    // Laporan pendapatan harian & bulanan
     public function laporan(Request $request)
     {
         $tanggal = $request->tanggal ?? now()->toDateString();
@@ -44,12 +47,23 @@ class ManajerController extends Controller
             ->whereYear('tanggal_transaksi', $tahun)
             ->sum('total_harga');
 
-        return view('manajer.laporan', compact('pendapatanHarian', 'pendapatanBulanan', 'tanggal', 'bulan', 'tahun'));
+        return view('manajer.laporan', compact(
+            'pendapatanHarian',
+            'pendapatanBulanan',
+            'tanggal',
+            'bulan',
+            'tahun'
+        ));
     }
 
+    // Log aktivitas pegawai
     public function log()
     {
-        $logs = LogAktivitas::with('user')->orderBy('created_at', 'desc')->get();
+        // gunakan paginate agar bisa dipanggil $logs->links() di Blade
+        $logs = LogAktivitas::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
         return view('manajer.log', compact('logs'));
     }
 }

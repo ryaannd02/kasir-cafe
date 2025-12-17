@@ -15,4 +15,16 @@ class DetailTransaksi extends Model
         'jumlah',
         'subtotal',
     ];
+
+    // Relasi ke transaksi
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class, 'id_transaksi');
+    }
+
+    // Relasi ke menu
+    public function menu()
+    {
+        return $this->belongsTo(Menu::class, 'id_menu');
+    }
 }
